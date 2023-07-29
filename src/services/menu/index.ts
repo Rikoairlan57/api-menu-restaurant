@@ -39,4 +39,12 @@ export class MenuService {
       data,
     });
   }
+
+  async deleteMenuById(id: number): Promise<void> {
+    await this.prisma.menus.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+  }
 }
