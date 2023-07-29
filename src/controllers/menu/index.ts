@@ -7,6 +7,8 @@ import {
   Get,
   Param,
   Put,
+  Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Menu } from 'src/entities/dto';
@@ -68,5 +70,16 @@ export class MenusController {
     };
 
     return this.menusService.updateMenu(id, menu);
+  }
+
+  @Delete(':id')
+  async deleteMenuById(@Param('id') id: number): Promise<{ message: string }> {
+    const menu = await this.menusService.getMenuByID(id);
+    if (!menu) {
+      throw new NotFoundException('Menu Not Found');
+    }
+
+    await this.menusService.deleteMenuById(id);
+    return { message: 'Delete menu successfuly' };
   }
 }
