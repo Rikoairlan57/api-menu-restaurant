@@ -5,6 +5,7 @@ import {
   UseInterceptors,
   Post,
   Get,
+  Param,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Menu } from 'src/entities/dto';
@@ -39,5 +40,10 @@ export class MenusController {
   @Get()
   async getAllMenus(): Promise<Menu[]> {
     return this.menusService.getAllMenus();
+  }
+
+  @Get(':id')
+  async getMenuById(@Param('id') id: number): Promise<Menu> {
+    return this.menusService.getMenuByID(id);
   }
 }
