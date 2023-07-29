@@ -22,4 +22,12 @@ export class MenuService {
   async getAllMenus(): Promise<Menu[]> {
     return this.prisma.menus.findMany();
   }
+
+  async getMenuByID(id: number): Promise<Menu> {
+    return this.prisma.menus.findUnique({
+      where: {
+        id: Number(id),
+      },
+    });
+  }
 }
