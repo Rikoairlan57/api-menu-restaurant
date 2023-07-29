@@ -14,8 +14,8 @@ model Menus {
   id          Int     @id @default(autoincrement())
   title       String
   description String?
-  qty         Int
-  price       Int
+  qty         String
+  price       String
   from        String
   image       String?
 }
