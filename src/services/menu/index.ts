@@ -30,4 +30,13 @@ export class MenuService {
       },
     });
   }
+
+  async updateMenu(id: number, data: Menu): Promise<Menu> {
+    return this.prisma.menus.update({
+      where: {
+        id: Number(id),
+      },
+      data,
+    });
+  }
 }

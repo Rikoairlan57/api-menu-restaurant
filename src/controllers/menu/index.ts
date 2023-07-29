@@ -6,6 +6,7 @@ import {
   Post,
   Get,
   Param,
+  Put,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Menu } from 'src/entities/dto';
@@ -25,14 +26,14 @@ export class MenusController {
     @UploadedFile() file: Express.Multer.File,
     @Body() menu: Menu,
   ): Promise<Menu> {
-    const imgaeUrl = await this.cloudinaryService.uploadImage(file);
+    const imageUrl = await this.cloudinaryService.uploadImage(file);
     const saveMenu = await this.menusService.createMenu({
       title: menu.title,
       description: menu.description,
       qty: menu.qty,
       price: menu.price,
       from: menu.from,
-      image: imgaeUrl,
+      image: imageUrl,
     });
     return saveMenu;
   }
@@ -45,5 +46,27 @@ export class MenusController {
   @Get(':id')
   async getMenuById(@Param('id') id: number): Promise<Menu> {
     return this.menusService.getMenuByID(id);
+  }
+
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('image'))
+  async updateBook(
+    @Param('id') id: number,
+    @UploadedFile() file: Express.Multer.File,
+    @Body() updatedMenu: Menu,
+  ): Promise<Menu> {
+    let imageUrl = updatedMenu.image;
+
+    if (file) {
+      const uploadedImage = await this.cloudinaryService.uploadImage(file);
+      imageUrl = uploadedImage.secure_url;
+    }
+
+    const menu: Menu = {
+      ...updatedMenu,
+      image: imageUrl,
+    };
+
+    return this.menusService.updateMenu(id, menu);
   }
 }
