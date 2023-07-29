@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class Menu implements Prisma.MenusCreateInput {
   @IsNotEmpty()
@@ -11,16 +12,16 @@ export class Menu implements Prisma.MenusCreateInput {
   description: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  qty: number;
-
-  @IsNotEmpty()
-  @IsNumber()
-  price: number;
+  @IsString()
+  from: string;
 
   @IsNotEmpty()
   @IsString()
-  from: string;
+  qty: string;
+
+  @IsNotEmpty()
+  @IsString()
+  price: string;
 
   image: any;
 }
